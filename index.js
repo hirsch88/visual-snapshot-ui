@@ -28,7 +28,10 @@ const SNAPSHOT_PATH = path.join(DIRNAME, "snapshots");
   for (let index = 0; index < images.length; index++) {
     const image = images[index];
     const testFolder = path.join(uiFolderPath, folderName(image));
-    createFolder(testFolder);
+
+    if (!fs.existsSync(testFolder)) {
+      fs.mkdirSync(testFolder);
+    }
 
     fs.writeFileSync(
       path.join(testFolder, `${fileName(image)}.html`),
@@ -80,7 +83,6 @@ function htmlTemplate(snapshotFolder, file) {
   const imagePath = `../..${file
     .replace(snapshotFolder, "")
     .replace("-actual.png", "")}`;
-  console.log(imagePath);
   return `<html>
     <style>
         img {
